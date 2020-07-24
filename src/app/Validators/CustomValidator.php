@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Validators;
 
 use Illuminate\Validation\Validator;
@@ -19,7 +21,7 @@ class CustomValidator extends Validator
      */
     protected function validatePhoneSimple($attribute, $value)
     {
-        return preg_match('/^(\d){6,20}$/', $value);
+        return preg_match('/^\+?(\d){6,20}$/', $value);
     }
 
     /**

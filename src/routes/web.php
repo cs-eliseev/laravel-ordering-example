@@ -14,8 +14,3 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', 'OrderController@index')->name('main');
-
-Route::get('/test', function () {
-    logger(1);
-});
-

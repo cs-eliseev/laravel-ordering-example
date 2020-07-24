@@ -1,9 +1,12 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Tests\OrderServices;
 
 use App\Config\DateConfig;
 use App\Config\ExceptionCodeConfig;
+use App\Helpers\ErrorMessage;
 use App\Models\Order;
 use App\Models\Package;
 use App\Models\PackageDay;
@@ -57,7 +60,6 @@ class OrderServicesTest extends TestCase
     protected function tearDown(): void
     {
         if (self::$removeData) {
-            echo 1;
             self::$deliveryDay->delete();
             self::$testPackage->delete();
 
@@ -67,6 +69,9 @@ class OrderServicesTest extends TestCase
         parent::tearDown();
     }
 
+    /**
+     * Проверка ошибки на несуществующий пакет.
+     */
     public function testUndefinedPackage(): void
     {
         try {
@@ -76,12 +81,12 @@ class OrderServicesTest extends TestCase
                 'name' => 'Тестоавый Пользователь',
                 'price' => '100',
                 'address' => 'Санкт-Петербург, Финльяндский проспект, д. 4',
-                'delivery_at' => Carbon::now()->format(DateConfig::NORMAL_FULL),
+                'delivery' => Carbon::now()->format(DateConfig::NORMAL_FULL),
                 'phone' => '+79110064400',
                 'package' => $packageId,
             ]);
 
-            $this->expectException(OrderLogicException::getErrorMsg(
+            $this->expectException(ErrorMessage::getErrorMsg(
                 ExceptionCodeConfig::ORDER_MODEL_UNDEFINED_PACKAGE,
                 ['package' => $packageId]
             ));
@@ -90,6 +95,9 @@ class OrderServicesTest extends TestCase
         }
     }
 
+    /**
+     * Проверка ошибки в изменении стоимости.
+     */
     public function testChangePrice(): void
     {
         try {
@@ -99,12 +107,12 @@ class OrderServicesTest extends TestCase
                 'name' => 'Тестоавый Пользователь',
                 'price' => $price,
                 'address' => 'Санкт-Петербург, Финльяндский проспект, д. 4',
-                'delivery_at' => Carbon::now()->format(DateConfig::NORMAL_FULL),
+                'delivery' => Carbon::now()->format(DateConfig::NORMAL_FULL),
                 'phone' => '+79110064400',
                 'package' => self::$testPackage->id,
             ]);
 
-            $this->expectException(OrderLogicException::getErrorMsg(
+            $this->expectException(ErrorMessage::getErrorMsg(
                 ExceptionCodeConfig::ORDER_MODEL_CHANGE_PRICE,
                 [
                     'price_old' => $price,
@@ -116,20 +124,24 @@ class OrderServicesTest extends TestCase
         }
     }
 
+    /**
+     * Проверка не допустимых дней.
+     */
     public function testNotDeliveryDay(): void
     {
         try {
             $day = Carbon::now()->addDay();
+
             self::$orderService->create([
                 'name' => 'Тестоавый Пользователь',
                 'price' => '100',
                 'address' => 'Санкт-Петербург, Финльяндский проспект, д. 4',
-                'delivery_at' => $day->format(DateConfig::NORMAL_FULL),
+                'delivery' => $day->format(DateConfig::NORMAL_FULL),
                 'phone' => '+79110064400',
                 'package' => self::$testPackage->id,
             ]);
 
-            $this->expectException(OrderLogicException::getErrorMsg(
+            $this->expectException(ErrorMessage::getErrorMsg(
                 ExceptionCodeConfig::ORDER_MODEL_NOT_DELIVERY_DAY,
                 ['day' => $day->dayOfWeek ?: 7]
             ));
@@ -138,6 +150,9 @@ class OrderServicesTest extends TestCase
         }
     }
 
+    /**
+     * Проверка предыдущего дня.
+     */
     public function testLastDay(): void
     {
         try {
@@ -146,17 +161,20 @@ class OrderServicesTest extends TestCase
                 'name' => 'Тестоавый Пользователь',
                 'price' => '100',
                 'address' => 'Санкт-Петербург, Финльяндский проспект, д. 4',
-                'delivery_at' => $day->format(DateConfig::NORMAL_FULL),
+                'delivery' => $day->format(DateConfig::NORMAL_FULL),
                 'phone' => '+79110064400',
                 'package' => self::$testPackage->id,
             ]);
 
-            $this->expectException(OrderLogicException::getErrorMsg(ExceptionCodeConfig::ORDER_MODEL_LAST_DAY));
+            $this->expectException(ErrorMessage::getErrorMsg(ExceptionCodeConfig::ORDER_MODEL_LAST_DAY));
         } catch (OrderLogicException $e) {
             $this->assertEquals($e->getCode(), ExceptionCodeConfig::ORDER_MODEL_LAST_DAY);
         }
     }
 
+    /**
+     * Проверка создания заказа.
+     */
     public function testCreate(): void
     {
         do {
@@ -167,7 +185,7 @@ class OrderServicesTest extends TestCase
             'name' => 'Тестоавый Пользователь',
             'price' => '100',
             'address' => 'Санкт-Петербург, Финльяндский проспект, д. 4',
-            'delivery_at' => Carbon::now()->format(DateConfig::NORMAL_FULL),
+            'delivery' => Carbon::now()->format(DateConfig::NORMAL_FULL),
             'phone' => "+{$phone}",
             'package' => self::$testPackage->id,
         ]);
@@ -184,6 +202,9 @@ class OrderServicesTest extends TestCase
         $this->assertTrue($address->delete());
     }
 
+    /**
+     * Проверка создания заказа с повторяющимся номером.
+     */
     public function testRepeatNumber(): void
     {
         do {
@@ -194,7 +215,7 @@ class OrderServicesTest extends TestCase
             'name' => 'Тестоавый Пользователь',
             'price' => '100',
             'address' => 'Санкт-Петербург, Финльяндский проспект, д. 4',
-            'delivery_at' => Carbon::now()->format(DateConfig::NORMAL_FULL),
+            'delivery' => Carbon::now()->format(DateConfig::NORMAL_FULL),
             'phone' => "+{$phone}",
             'package' => self::$testPackage->id,
         ]);
@@ -205,7 +226,7 @@ class OrderServicesTest extends TestCase
             'name' => 'Тестоавый Пользователь 2',
             'price' => '100',
             'address' => 'Санкт-Петербург, Набережная р. Мойки, д. 10',
-            'delivery_at' => Carbon::now()->format(DateConfig::NORMAL_FULL),
+            'delivery' => Carbon::now()->format(DateConfig::NORMAL_FULL),
             'phone' => "+{$phone}",
             'package' => self::$testPackage->id,
         ]);

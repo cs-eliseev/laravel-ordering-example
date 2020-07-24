@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Helpers;
 
 use App\Config\ErrorConfig;
@@ -34,14 +36,25 @@ class ErrorMessage
 
         $msg = trans("error_code.{$code}", $params, ErrorConfig::LOCAL_FRONT);
 
-        logger(self::getDebugInfoByException($e));
-
         return collect([
            'code' => $e->getCode(),
            'message' => $msg,
         ]);
     }
 
+    /**
+     * Получить сообщение об ошибке.
+     *
+     * @param int $code
+     * @param array $params
+     * @param string $local
+     *
+     * @return string
+     */
+    public static function getErrorMsg(int $code, array $params = [], string $local = ErrorConfig::LOCAL_BACK): string
+    {
+        return trans("error_code.{$code}", $params, $local) ?? trans('error_code.' . ExceptionCodeConfig::UNKNOWN_ERROR, [], $local);
+    }
 
     /**
      * Получить отладочную информаицб из исключения.

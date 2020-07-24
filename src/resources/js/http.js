@@ -9,10 +9,6 @@ const axiosInstance = Axios.create({
     }
 });
 
-const notify = (message) => {
-    console.log(message);
-};
-
 axiosInstance.interceptors.response.use(
     response => {
         return response;

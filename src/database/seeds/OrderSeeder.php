@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 use App\Models\Client;
 use App\Models\Order;
 use Illuminate\Database\Seeder;

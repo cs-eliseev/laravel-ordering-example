@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Components\SeoComponent;
 
 use App\Components\SeoComponent\Models\SeoModel;
@@ -50,6 +52,6 @@ class Seo
                                                             : substr(strip_tags($params['content']), 0, 170));
         $this->seo->keywords = empty($params['keywords'])
                              ? ''
-                             : (in_array($params['keywords']) ? implode(', ', $params['keywords']) : $params['keywords']);
+                             : (is_array($params['keywords']) ? implode(', ', $params['keywords']) : $params['keywords']);
     }
 }

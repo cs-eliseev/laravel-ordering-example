@@ -13,7 +13,6 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-
 Route::middleware('ajax')->namespace('Ajax')->group(function(){
     Route::prefix('package')->group(function () {
         Route::get('list', 'PackageController@list');
@@ -22,7 +21,4 @@ Route::middleware('ajax')->namespace('Ajax')->group(function(){
 
 
     Route::post('/order/create', 'OrderController@create');
-//    Route::post('/order/create', function () {
-//        logger(2);
-//    });
 });

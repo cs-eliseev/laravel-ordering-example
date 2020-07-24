@@ -1,15 +1,15 @@
-English | [Русский](https://github.com/cs-eliseev/laravel-calculator-example/blob/master/src/README.ru_RU.md)
+[English](https://github.com/cs-eliseev/laravel-calculator-example/blob/master/src/README.md) | Русский
 
-Documentation
+Докуметация
 =======
 
-[Laravel documentation](https://laravel.com/docs)
+[Документация по Laravel](https://laravel.com/docs)
 
-## Error
+## Ошибки
 
-### Validate error
+### Ошибки валидации
 
-|Error Ru|Error En|
+|Ru|En|
 |:---|:---|
 |Поле обязательно для заполнения.|The field is required.|
 |Поле должно быть числом.|The must be an integer.|
@@ -18,9 +18,9 @@ Documentation
 |Поле содержит некорректный номер телефона, длинна не менее 6 цифр и не более 20.|The field contains an invalid phone number, at least 6 digits and no more than 20.|
 |Поле содержит недопустимые символы. Допустимы буквы, и пробелы.|The field contains invalid characters. Letters and spaces are allowed.|
 
-### Exception Code
+### Коды исключений
 
-|Error Code|Error Ru|Error En|
+|Код ошибки|Ru|En|
 |:---:|:---|:---|
 |0|Что то пошло не так|Unknown error|
 |10000|Параметр ":name" не установлен|Argument ":name" is not set|
@@ -32,4 +32,4 @@ Documentation
 
 ***
 
-> Eliseev AK
+> Елисеев АК

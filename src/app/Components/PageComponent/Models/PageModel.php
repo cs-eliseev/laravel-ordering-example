@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Components\PageComponent\Models;
 
 use App\Components\SeoComponent\Models\SeoModel;

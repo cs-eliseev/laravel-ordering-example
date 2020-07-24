@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Tests\Feature;
 
 use Illuminate\Database\Connection;
@@ -7,7 +9,10 @@ use Tests\TestCase;
 
 class DbConnectivityTest extends TestCase
 {
-    public function testDbConnectivity()
+    /**
+     * Проверка подключения к БД.
+     */
+    public function testDbConnectivity(): void
     {
         /** @var Connection $db */
         $db = $this->app->make("db");

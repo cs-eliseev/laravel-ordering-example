@@ -1,9 +1,11 @@
+English | [Русский](https://github.com/cs-eliseev/laravel-ordering-example/blob/master/README.ru_RU.md)
+
 Example ordering for Laravel
 =======
 
 ## Description
 
-Uses a persistant database store and stack Nginx, PHP 7.4, MySQL 5.7.
+Uses stack: Nginx, PHP 7.4, MySQL 5.7.
 
 
 ## Info
@@ -11,18 +13,38 @@ Uses a persistant database store and stack Nginx, PHP 7.4, MySQL 5.7.
 ### Project link
 
 * Laravel application HTTP: http://localhost:6002
-* MySQL: http://localhost:6004
+
+|Service|Port|
+|:---|:---:|
+|http|6002|
+|mysql|6004|
+|xdebug|9000|
+
+### Docker containers
+
+|Service|Container name|
+|:---|:---:|
+|nginx|testing-nginx|
+|php-fpm|testing-php-fpm|
+|mysql|testing-mysql|
+|aplication|testing-workspace|
 
 ### Laravel project path
 
 ```
-src
+./src
 ```
 
 ### Logs path
 
 ```
-logs
+./logs
+```
+
+### UnitTest report path
+
+```
+./src/coverage_report
 ```
 
 
@@ -35,43 +57,22 @@ logs
 
 ### Build application
 
-1. Clone laradock
+1. Import dependency
 
     ```shell
     git clone https://github.com/laradock/laradock.git docker
     ```
 
-1. Build all Docker containers
+1. Build Docker containers
 
     ```shell
     docker-compose up -d --build
     ```
 
-1. Go to project
+1. Build dependency
 
     ```shell
-    cd src
-    ```
-
-1. Install composer dependency
-
-    Run in OS (php 7.4)
-    ```shell
-    composer update
-    ```
-
-1. Install NPM dependency
-
-    Run in OS (node 13.11.00 npm 6.13.7)
-    ```shell
-    npm i
-    ```
-
-1. Build frontend
-
-    Run in OS (node 13.11.00 npm 6.13.7)
-    ```shell
-    npm run dev
+    docker exec testing-workspace bash -c 'npm i --no-bin-links && npm run dev && composer update'
     ```
 
 
@@ -80,7 +81,7 @@ logs
 1. Migrate table
  
     ```shell
-    docker exec testing-php-fpm php artisan migrate
+    docker exec testing-workspace php artisan migrate
     ```
 
 ### Generate test data
@@ -88,20 +89,47 @@ logs
 1. Run seeding
 
     ```shell
-    docker exec testing-php-fpm php artisan db:seed
+    docker exec testing-workspace php artisan db:seed
     ```    
  
 ### Use UnitTest
 
-UNIT test service `OrderServicesTest`
+UNIT test service `OrderServices`
 
-1. To run the PHPUnit unit tests
+1. Go to container
 
     ```shell
-    docker exec testing-php-fpm ./vendor/bin/phpunit
+    docker exec -it testing-workspace bash
     ```
 
-### SQL example
+1. Run UnitTest
+
+    ```shell
+    phpunit
+    ```
+
+1. View code coverage
+
+    ```
+   ./src/coverage_report/index.html
+   ```
+
+
+## Update container data
+
+1. Удаление данных MySQL
+
+    ```shell
+    rm -rf ~/.docker_testing/mysql
+   ```
+
+
+## Documentation
+
+[User documentation](https://github.com/cs-eliseev/laravel-testing-example/blob/master/src/README.md)
+
+
+## SQL example
 
 1. Choose for each client the number of orders with a price less than 1000 and more than 1000
 
@@ -144,6 +172,7 @@ UNIT test service `OrderServicesTest`
     WHERE numGroup = 3
     ORDER BY client_id;
     ```
+
 
 ***
 

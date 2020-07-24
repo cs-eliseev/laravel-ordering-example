@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 use App\Helpers\EnvHelpers;
 use Illuminate\Database\Seeder;
 use Illuminate\Database\Eloquent\Model;
@@ -11,7 +13,7 @@ class DatabaseSeeder extends Seeder
      *
      * @return void
      */
-    public function run()
+    public function run(): void
     {
         if (!EnvHelpers::isProduction()) {
             $this->call(PackageSeeder::class);

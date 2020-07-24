@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Http\Controllers;
 
 use App\Components\PageComponent\Models\PageModel;
@@ -17,12 +19,13 @@ class BaseController extends Controller
      * Рендер страницы.
      *
      * @param PageModel $page
+     * @param string $template
      *
      * @return View
      */
-    protected function render(PageModel $page): View
+    protected function render(PageModel $page, string $template = 'templates.index'): View
     {
-        return view('templates.index', [
+        return view($template, [
             'page' => $page
         ]);
     }

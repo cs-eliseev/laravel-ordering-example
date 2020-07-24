@@ -31,7 +31,7 @@ return [
     ],
     'boolean' => 'The :attribute field must be true or false.',
     'confirmed' => 'The :attribute confirmation does not match.',
-    'date' => 'The :attribute is not a valid date.',
+    'date' => 'The is not a valid date.',
     'date_equals' => 'The :attribute must be a date equal to :date.',
     'date_format' => 'The :attribute does not match the format :format.',
     'different' => 'The :attribute and :other must be different.',
@@ -59,7 +59,7 @@ return [
     'image' => 'The :attribute must be an image.',
     'in' => 'The selected :attribute is invalid.',
     'in_array' => 'The :attribute field does not exist in :other.',
-    'integer' => 'The :attribute must be an integer.',
+    'integer' => 'The must be an integer.',
     'ip' => 'The :attribute must be a valid IP address.',
     'ipv4' => 'The :attribute must be a valid IPv4 address.',
     'ipv6' => 'The :attribute must be a valid IPv6 address.',
@@ -96,7 +96,7 @@ return [
     'password' => 'The password is incorrect.',
     'present' => 'The :attribute field must be present.',
     'regex' => 'The :attribute format is invalid.',
-    'required' => 'The :attribute field is required.',
+    'required' => 'The field is required.',
     'required_if' => 'The :attribute field is required when :other is :value.',
     'required_unless' => 'The :attribute field is required unless :other is in :values.',
     'required_with' => 'The :attribute field is required when :values is present.',
@@ -147,5 +147,7 @@ return [
     */
 
     'attributes' => [],
-
+    'address_ru' => 'The address field contains invalid characters. Allowed letters, numbers, spaces and signs, .- / ().',
+    'phone_simple' => 'The field contains an invalid phone number, at least 6 digits and no more than 20.',
+    'text_ru' => 'The field contains invalid characters. Letters and spaces are allowed.',
 ];

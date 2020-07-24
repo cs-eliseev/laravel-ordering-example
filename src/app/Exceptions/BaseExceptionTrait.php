@@ -4,6 +4,7 @@ namespace App\Exceptions;
 
 use App\Config\ErrorConfig;
 use App\Config\ExceptionCodeConfig;
+use App\Helpers\ErrorMessage;
 use Throwable;
 
 /**
@@ -44,20 +45,6 @@ trait BaseExceptionTrait
     }
 
     /**
-     * Получить сообщение об ошибке.
-     *
-     * @param int $code
-     * @param array $params
-     * @param string $local
-     *
-     * @return string
-     */
-    public static function getErrorMsg(int $code, array $params = [], string $local = ErrorConfig::LOCAL_BACK): string
-    {
-        return trans("error_code.{$code}", $params, $local) ?? trans('error_code.' . ExceptionCodeConfig::UNKNOWN_ERROR, [], $local);
-    }
-
-    /**
      * Вызов исключения.
      *
      * @param int $code
@@ -69,7 +56,7 @@ trait BaseExceptionTrait
      */
     public static function throwException(int $code, array $params = [], ?string $msg = '', string $local = ErrorConfig::LOCAL_BACK): void
     {
-        throw new self(self::getErrorMsg($code, $params, $local) . (empty($msg) ? '' : " {$msg}"), $code, $params);
+        throw new self(ErrorMessage::getErrorMsg($code, $params, $local) . (empty($msg) ? '' : " {$msg}"), $code, $params);
     }
 
     /**

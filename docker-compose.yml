@@ -11,6 +11,27 @@ volumes:
     driver: ${VOLUMES_DRIVER}
 
 services:
+### Workspace Utilities ##################################
+    workspace:
+      container_name: ${APP_NAME}-workspace
+      build:
+        context: ${PATH_CONFIGS}/workspace
+        dockerfile: Dockerfile
+        args:
+          - BASE_IMAGE_TAG_PREFIX=${WORKSPACE_BASE_IMAGE_TAG_PREFIX}
+          - LARADOCK_PHP_VERSION=${PHP_VERSION}
+          - PUID=${WORKSPACE_PUID}
+          - PGID=${WORKSPACE_PGID}
+          - TZ=${WORKSPACE_TIMEZONE}
+          - NODE_VERSION=${WORKSPACE_NODE_VERSION}
+          - WORKSPACE_USER=${WORKSPACE_USER}
+          - APP_CODE_PATH_CONTAINER=${APP_CODE_PATH_CONTAINER}
+      volumes:
+        - ${APP_CODE_PATH_HOST}:${APP_CODE_PATH_CONTAINER}${APP_CODE_CONTAINER_FLAG}
+      networks:
+        - frontend
+        - backend
+
 ### PHP-FPM ##############################################
     php-fpm:
       container_name: ${APP_NAME}-php-fpm
@@ -137,7 +158,7 @@ services:
         - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
         - TZ=${WORKSPACE_TIMEZONE}
       volumes:
-        - ~/.{APP_NAME}/mysql:/var/lib/mysql
+        - ~/.docker_${APP_NAME}/mysql:/var/lib/mysql
       ports:
         - "${MYSQL_PORT}:3306"
       depends_on:
